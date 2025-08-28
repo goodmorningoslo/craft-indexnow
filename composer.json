@@ -32,7 +32,6 @@
     "handle": "indexnow",
     "name": "IndexNow",
     "developer": "Good Morning",
-    "documentationUrl": "",
     "class": "goodmorning\\craftindexnow\\IndexNow"
   },
   "scripts": {
