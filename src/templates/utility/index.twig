@@ -1,0 +1,14 @@
+{% import '_includes/forms.twig' as forms %}
+
+<h1>Index Now</h1>
+<p>Submit all pages to be indexed by Bing's IndexNow API.</p>
+<form method="post" accept-charset="UTF-8">
+    {{ csrfInput() }}
+    {{ actionInput('indexnow/index-now/index') }}
+    <div class="buttons">
+    {{ forms.submitButton({
+      label: 'Send'|t('indexnow'),
+      class: 'btn submit'
+    }) }}
+  </div>
+</form>

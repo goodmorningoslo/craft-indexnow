@@ -1,0 +1,87 @@
+{# @var plugin \goodmorning\craftindexnow\IndexNow #}
+{# @var settings \goodmorning\craftindexnow\models\Settings #}
+
+{% import '_includes/forms.twig' as forms %}
+
+{# ... #}
+<form method="post" accept-charset="UTF-8">
+  {{ csrfInput() }}
+  {{ actionInput('plugins/save-settings') }}
+  {{ hiddenInput('pluginId', plugin.id) }}
+
+  <fieldset>
+    {# Sections Field #}
+    {{ forms.checkboxSelectField({
+      label: 'Sections to include in IndexNow'|t('indexnow'),
+      instructions: 'Select the sections you want to include in IndexNow.'|t('indexnow'),
+      id: 'sections',
+      name: 'sections',
+      options: getSectionsWithUrls() | map(section => {
+        label: section.label,
+        value: section.value,
+        checked: section.value in settings.sections
+      })
+    }) }}
+
+    {# API Key Field with Environment Variable Support #}
+    {{ forms.autosuggestField({
+      label: 'API Key'|t('indexnow'),
+      instructions: 'Enter your IndexNow API key or use an environment variable.'|t('indexnow'),
+      id: 'apiKey',
+      name: 'apiKey',
+      value: settings.apiKey ? settings.apiKey : generateKey(),
+      placeholder: 'Enter API key or use ENV variable',
+      errors: settings.getErrors('apiKey'),
+      suggestEnvVars: true,
+    }) }}
+
+    {# Environment Selection #}
+    {{ forms.autosuggestField({
+      label: 'Environment'|t('indexnow'),
+      instructions: 'Select the environment for IndexNow.'|t('indexnow'),
+      id: 'environment',
+      name: 'environment',
+      value: settings.environment,
+      errors: settings.getErrors('environment'),
+      options: [
+        { label: 'production', value: 'production' },
+        { label: 'staging', value: 'staging' },
+        { label: 'development', value: 'development' },
+        { label: 'dev', value: 'dev' },
+        { label: 'live', value: 'live' }
+      ]
+    }) }}
+
+    {{ forms.lightswitchField({
+      label: 'Dry Run',
+      id: 'dryRun',
+      name: 'dryRun',
+      on: settings.dryRun ?? false,
+      instructions: 'If enabled, requests are not sent to IndexNow. They are logged instead.'
+    }) }}
+
+    {{ forms.textField({
+      label: 'Endpoint Override',
+      id: 'endpointOverride',
+      name: 'endpointOverride',
+      value: settings.endpointOverride ?? '',
+      instructions: 'Optional alternate endpoint (e.g. a Pipedream / RequestBin URL) for testing.'
+    }) }}
+
+    {{ forms.lightswitchField({
+      label: 'Log Payload',
+      id: 'logPayload',
+      name: 'logPayload',
+      on: settings.logPayload ?? false,
+      instructions: 'Log the full JSON payload for debugging (avoid enabling in production for large batches).'
+    }) }}
+
+  </fieldset>
+
+  <div class="buttons">
+    {{ forms.submitButton({
+      label: 'Save',
+      class: 'btn submit'
+    }) }}
+  </div>
+</form>
