@@ -154,6 +154,7 @@ class EntryService extends Component
   {
     $job = new SubmitIndexNow([
       'urls' => [$entry->url],
+      'siteId' => $entry->siteId,
       'chunk' => 0,
       'totalChunks' => 1,
     ]);
@@ -170,6 +171,7 @@ class EntryService extends Component
   {
     $urls = [];
     $chunkSize = 1000; // Define the chunk size
+    $siteId = $entries[0]->siteId ?? 0;
 
     foreach ($entries as $entry) {
       $urls[] = $entry->url;
@@ -183,6 +185,7 @@ class EntryService extends Component
     foreach ($chunks as $index => $chunk) {
       $job = new SubmitIndexNow([
         'urls' => $chunk,
+        'siteId' => $siteId,
         'chunk' => $index,
         'totalChunks' => count($chunks),
       ]);

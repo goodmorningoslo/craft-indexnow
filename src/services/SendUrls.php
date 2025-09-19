@@ -18,7 +18,7 @@ class SendUrls extends Component
    * @param array $urls
    * @return void
    */
-  public function sendUrls(array $urls): void
+  public function sendUrls(array $urls, int $siteId): void
   {
     $settings = Craft::$app->getPlugins()->getPlugin('indexnow')->getSettings();
     $apiKey = $settings->apiKey ?? '';
@@ -30,10 +30,14 @@ class SendUrls extends Component
       return;
     }
 
-    $hostInfo = Craft::$app->getRequest()->getHostInfo();
-    $hostOnly = parse_url($hostInfo, PHP_URL_HOST) ?: $hostInfo;
+    $site = Craft::$app->sites->getSiteById($siteId);
+    if (!$site) {
+      Craft::error('Invalid site ID provided for IndexNow: ' . $siteId, __METHOD__);
+      return;
+    }
+    $hostOnly = parse_url($site->baseUrl, PHP_URL_HOST);
 
-    $keyLocation = $settings->keyLocationOverride ?: rtrim($hostInfo, '/') . '/' . $apiKey . '.txt';
+    $keyLocation = $settings->keyLocationOverride ?: rtrim($site->baseUrl, '/') . '/' . $apiKey . '.txt';
 
     $payload = [
       'host' => $hostOnly,

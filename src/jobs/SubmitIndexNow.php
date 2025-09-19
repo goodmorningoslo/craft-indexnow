@@ -19,6 +19,11 @@ class SubmitIndexNow extends BaseJob
   public int $totalChunks = 0;
 
   /**
+   * @var int
+   */
+  public int $siteId = 0;
+
+  /**
    * @var array
    */
   public array $urls = [];
@@ -65,7 +70,7 @@ class SubmitIndexNow extends BaseJob
       )
     );
 
-    IndexNow::getInstance()->sendUrls->sendUrls($urls);
+    IndexNow::getInstance()->sendUrls->sendUrls($urls, $this->siteId);
   }
 
   protected function defaultDescription(): ?string
