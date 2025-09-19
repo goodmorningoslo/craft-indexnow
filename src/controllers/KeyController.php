@@ -12,7 +12,7 @@ use yii\web\Response;
 class KeyController extends Controller
 {
     public $defaultAction = 'index';
-    protected array|int|bool $allowAnonymous = self::ALLOW_ANONYMOUS_NEVER;
+    protected array|int|bool $allowAnonymous = ['index'];
 
     /**
      * indexnow/key action

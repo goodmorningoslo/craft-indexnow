@@ -9,50 +9,55 @@ use craft\base\Model;
  */
 class Settings extends Model
 {
-    /**
-     * @var array Sections to include in IndexNow
-     */
-    public $sections = [];
+  /**
+   * @var array Sections to include in IndexNow
+   */
+  public $sections = [];
 
-    /**
-     * @var string API key for IndexNow
-     */
-    public $apiKey = '';
+  /**
+   * @var string API key for IndexNow
+   */
+  public $apiKey = '';
 
-    /**
-     * @var string Environment for IndexNow
-     */
-    public $environment = 'production';
+  /**
+   * @var string Environment for IndexNow
+   */
+  public $environment = 'production';
 
-    /**
-     * @var bool Whether to perform a dry run (log only, no real HTTP call)
-     */
-    public $dryRun = false;
+  /**
+   * @var bool Whether to perform a dry run (log only, no real HTTP call)
+   */
+  public $dryRun = false;
 
-    /**
-     * @var string|null Optional override for the IndexNow endpoint (useful for RequestBin / Pipedream)
-     */
-    public $endpointOverride = null;
+  /**
+   * @var string|null Optional override for the IndexNow endpoint (useful for RequestBin / Pipedream)
+   */
+  public $endpointOverride = null;
 
-    /**
-     * @var bool Whether to log the payload being sent
-     */
-    public $logPayload = false;
+  /**
+   * @var bool Whether to log the payload being sent
+   */
+  public $logPayload = false;
 
-    /**
-     * Define validation rules for the model attributes.
-     *
-     * @return array
-     */
-    public function rules(): array
-    {
-        return [
-          [['sections'], 'safe'],
-          [['apiKey'], 'string'],
-          [['apiKey'], 'required'],
-          [['environment'], 'string'],
+  /**
+   * @var string|null Optional override for the key location URL
+   */
+  public ?string $keyLocationOverride = null;
+
+  /**
+   * Define validation rules for the model attributes.
+   *
+   * @return array
+   */
+  public function rules(): array
+  {
+    return [
+      [['sections'], 'safe'],
+      [['apiKey'], 'string'],
+      [['apiKey'], 'required'],
+      [['environment'], 'string'],
       [['dryRun', 'logPayload'], 'boolean'],
       [['endpointOverride'], 'url', 'defaultScheme' => 'https', 'skipOnEmpty' => true],
-      ];
-    }
+    ];
+  }
 }

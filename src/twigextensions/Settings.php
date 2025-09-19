@@ -11,40 +11,40 @@ use Twig\TwigFunction;
  */
 class Settings extends AbstractExtension
 {
-    /**
-     * @return TwigFunction[]
-     */
-    public function getFunctions(): array
-    {
-        return [
-            new TwigFunction('getSectionsWithUrls', [$this, 'getSectionsWithUrls']),
-            new TwigFunction('generateKey', [$this, 'generateKey']),
-        ];
-    }
+  /**
+   * @return TwigFunction[]
+   */
+  public function getFunctions(): array
+  {
+    return [
+      new TwigFunction('getSectionsWithUrls', [$this, 'getSectionsWithUrls']),
+      new TwigFunction('generateKey', [$this, 'generateKey']),
+    ];
+  }
 
-    /**
-     * Returns sections (name + handle) that have URLs.
-     */
-    public function getSectionsWithUrls(): array
-    {
-        // settingsService is registered as a component in the plugin config
-        $service = IndexNow::getInstance()->settingsService;
+  /**
+   * Returns sections (name + handle) that have URLs.
+   */
+  public function getSectionsWithUrls(): array
+  {
+    // settingsService is registered as a component in the plugin config
+    $service = IndexNow::getInstance()->settingsService;
 
-        $sectionsWithUrls = $service->getSectionsWithUrls();
+    $sectionsWithUrls = $service->getSectionsWithUrls();
 
-        return array_map(static function(array $section): array {
-            return [
-                'label' => $section['name'],
-                'value' => $section['handle'],
-            ];
-        }, $sectionsWithUrls);
-    }
+    return array_map(static function (array $section): array {
+      return [
+        'label' => $section['name'],
+        'value' => $section['handle'],
+      ];
+    }, $sectionsWithUrls);
+  }
 
-    /**
-     * Generate a random API key via the settings service.
-     */
-    public function generateKey(): string
-    {
-        return IndexNow::getInstance()->settingsService->generateKey();
-    }
+  /**
+   * Generate a random API key via the settings service.
+   */
+  public function generateKey(): string
+  {
+    return IndexNow::getInstance()->settingsService->generateKey();
+  }
 }

@@ -67,7 +67,14 @@
       value: settings.endpointOverride ?? '',
       instructions: 'Optional alternate endpoint (e.g. a Pipedream / RequestBin URL) for testing.'
     }) }}
-
+    {{ forms.textField({
+      label: 'Key Location Override',
+      id: 'keyLocationOverride',
+      name: 'keyLocationOverride',
+      value: settings.keyLocationOverride ?? '',
+      placeholder: 'https://www.example.com/myIndexNowKey.txt',
+      instructions: 'Optional. If set, submitted payload will include keyLocation pointing to this URL. Leave empty to use the default https://your-site/<apiKey>.txt.'
+    }) }}
     {{ forms.lightswitchField({
       label: 'Log Payload',
       id: 'logPayload',
